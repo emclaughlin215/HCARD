@@ -1,6 +1,6 @@
 import socket
 
-UDP_IP = "0.0.0.0"
+UDP_IP = "146.169.211.210."
 UDP_PORT = 5002
 data="" # declare for the while loop
 
