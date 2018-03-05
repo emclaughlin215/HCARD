@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
         Home_Widget = HomeWidget(self)
         self.central_widget.addWidget(Home_Widget)
 
-        Home_Widget.Exercise_button.mouseReleaseEvent = self.Exercise
+        Home_Widget.Exercise_button.mousePressEvent = self.Exercise
         Home_Widget.Result_button.mousePressEvent = self.Results
 
     def Results(self,val):
@@ -36,13 +36,14 @@ class MainWindow(QMainWindow):
         Exercise1_Widget = Exercise1Widget(self)
         self.central_widget.addWidget(Exercise1_Widget)
         self.central_widget.setCurrentWidget(Exercise1_Widget)
+        Exercise1_Widget.Home_button.mousePressEvent = self.Home
 
     def Home(self,val):
         Home_Widget = HomeWidget(self)
         self.central_widget.addWidget(Home_Widget)
         self.central_widget.setCurrentWidget(Home_Widget)
-        Home_Widget.Exercise_button.mouseReleaseEvent = self.Results
-        Home_Widget.Result_button.mousePressEvent = self.Exercise
+        Home_Widget.Exercise_button.mouseReleaseEvent = self.Exercise
+        Home_Widget.Result_button.mousePressEvent = self.Results
 
 
 

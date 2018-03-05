@@ -16,25 +16,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="Home_button">
-   <property name="geometry">
-    <rect>
-     <x>570</x>
-     <y>380</y>
-     <width>91</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="mouseTracking">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap>../../../../Work/HCARD/Images/Assets/homearrowAsset 1.png</pixmap>
-   </property>
-  </widget>
   <widget class="QLabel" name="Header">
    <property name="geometry">
     <rect>
@@ -52,6 +33,25 @@
    </property>
    <property name="pixmap">
     <pixmap>../../../../Work/HCARD/Images/Assets/ResultsheaderAsset 2.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Home_button">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>360</y>
+     <width>91</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/Assets/HomearrowleftAsset 3.png</pixmap>
    </property>
   </widget>
  </widget>
