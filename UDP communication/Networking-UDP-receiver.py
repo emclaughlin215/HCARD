@@ -1,7 +1,7 @@
 import socket
 
-UDP_IP = "146.169.211.210."
-UDP_PORT = 5002
+UDP_IP = "127.0.0.1" # "146.169.133.126"
+UDP_PORT = 631
 data="" # declare for the while loop
 
 sock = socket.socket(socket.AF_INET, # Internet

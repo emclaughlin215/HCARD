@@ -16,12 +16,12 @@ def chat(connection, listen):
 
 
 print("Starting...")
-ROLE = "SEND" # LISTEN or SEND
+ROLE = "LISTEN" # LISTEN or SEND
 #ROLE = "LISTEN" # LISTEN or SEND
 
-TCP_IP = '127.0.0.1'  # IP to connect to if we are the sender
+TCP_IP = '146.169.133.126'  # IP to connect to if we are the sender
 TCP_IP_LISTEN = '0.0.0.0' # IP to listen on (0.0.0.0 will listen to any source IP)
-TCP_PORT = 5007 # Port
+TCP_PORT = 631 # Port
 BUFFER_SIZE = 1024
 s = socket.socket(socket.AF_INET, # Internet socket
                   socket.SOCK_STREAM) # with TCP protocol
