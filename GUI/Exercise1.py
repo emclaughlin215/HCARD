@@ -69,3 +69,4 @@ class Ui_Form(object):
         canpath = "../../../../Work/HCARD/Images/WateringCan/Can%04d.png" %(value)
         print canpath
         self.Can.setPixmap(QtGui.QPixmap(canpath))
+

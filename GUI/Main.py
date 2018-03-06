@@ -62,7 +62,7 @@ class Exercise1Widget(QWidget, Exercise1.Ui_Form):
 
         self.timer = QTimer()
         self.timer.timeout.connect(self.serial_control)
-        self.timer.start(1)
+        self.timer.start(100)
 
     def serial_control(self):
         self.angle = Serial.Serial_read()
