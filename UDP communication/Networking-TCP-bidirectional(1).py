@@ -14,12 +14,15 @@ def chat(connection, listen):
     print "Closing connection..."
     connection.close() # Do not forget to clean up the connection or the port will be blocked until system restart
 
-
 print("Starting...")
 ROLE = "LISTEN" # LISTEN or SEND
 #ROLE = "LISTEN" # LISTEN or SEND
 
+<<<<<<< HEAD
 TCP_IP = '146.169.133.126'  # IP to connect to if we are the sender
+=======
+TCP_IP = '147.169.133.126'  # IP to connect to if we are the sender
+>>>>>>> d07d6679ece544d860f4ed679aa698fff96b153e
 TCP_IP_LISTEN = '0.0.0.0' # IP to listen on (0.0.0.0 will listen to any source IP)
 TCP_PORT = 631 # Port
 BUFFER_SIZE = 1024
@@ -32,6 +35,7 @@ if ROLE == "SEND":
         print "Trying to connect to ", TCP_IP, " : ", TCP_PORT
         #s.settimeout(2) # set timeout to ... second, if we can't connect we will raise an exception
         s.connect((TCP_IP, TCP_PORT)) # attempt to establish the connection
+        print "Yay Connected!!!!"
         chat(s,0) # remember 0 stands for the role of sender
     except Exception as e: # handle errors
         print "Socket failed with error: ", e

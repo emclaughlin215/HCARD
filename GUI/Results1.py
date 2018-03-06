@@ -25,6 +25,9 @@ class Ui_Form(object):
         self.Home_button.setText("")
         self.Home_button.setPixmap(QtGui.QPixmap("../../../../Work/HCARD/Images/Assets/HomearrowleftAsset 3.png"))
         self.Home_button.setObjectName("Home_button")
+        self.Plot = PlotWidget(Form)
+        self.Plot.setGeometry(QtCore.QRect(20, 70, 481, 271))
+        self.Plot.setObjectName("Plot")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -33,3 +36,4 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
 
+from pyqtgraph import PlotWidget

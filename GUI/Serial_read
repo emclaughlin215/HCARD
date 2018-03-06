@@ -1,0 +1,7 @@
+import Serial
+import time
+while True:
+    print(Serial.Serial_read())
+    time.sleep(1)
+
+# The current angle of the device is:-9.67 # between -90 and 90

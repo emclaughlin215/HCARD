@@ -3,7 +3,7 @@ import socket
 UDP_IP = "127.0.0.1"  # This is localhost address for same-machine testing comment this line if working in pairs
 #UDP_IP = "147.169.133.126" # configure this with the other computer's IP and uncomment
 UDP_PORT = 5001
-MESSAGE = "Hello, World!"
+MESSAGE = "Hello, Jacob, Love Kind David!"
 #MESSAGE = "exit" # Using this message will terminate the UDP receiver
 
 print "UDP target IP:", UDP_IP

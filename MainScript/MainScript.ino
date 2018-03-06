@@ -91,7 +91,7 @@ void dmpDataReady() {
 
 void setup() {
   
-// ************************* Bluetooth Setup ***************************
+// ************************* Bluetooth Setup ***************************1
 while (!Serial);  // required for Flora & Micro
   delay(500);
 
