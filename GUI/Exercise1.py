@@ -41,6 +41,8 @@ class Ui_Form(object):
         self.horizontalSlider_2.setMinimum(1)
         self.horizontalSlider_2.setMaximum(100)
 
+
+
         self.Home_button = QtWidgets.QLabel(Form)
         self.Home_button.setGeometry(QtCore.QRect(20, 360, 91, 41))
         self.Home_button.setMouseTracking(True)
@@ -60,13 +62,13 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
 
-    def retranslateFlower(self, value):
-        flowerpath = "../../../../Work/HCARD/Images/FlowerGrowing/AnimationFlowers%04d.png" %(value)
-        print flowerpath
-        self.Flower.setPixmap(QtGui.QPixmap(flowerpath))
-
-    def retranslatePot(self, value):
-        canpath = "../../../../Work/HCARD/Images/WateringCan/Can%04d.png" %(value)
-        print canpath
-        self.Can.setPixmap(QtGui.QPixmap(canpath))
+    # def retranslateFlower(self, value):
+    #     flowerpath = "../../../../Work/HCARD/Images/FlowerGrowing/AnimationFlowers%04d.png" %(value)
+    #     print flowerpath
+    #     self.Flower.setPixmap(QtGui.QPixmap(flowerpath))
+    #
+    # def retranslatePot(self, value):
+    #     canpath = "../../../../Work/HCARD/Images/WateringCan/Can%04d.png" %(value)
+    #     print canpath
+    #     self.Can.setPixmap(QtGui.QPixmap(canpath))
 
