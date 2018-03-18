@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>681</width>
+    <height>411</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLabel" name="Flower">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>681</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/FlowerGrowing/AnimationFlowers0001.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Can">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>681</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/WateringCan/Can0001.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Flower_small_1">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>10</y>
+     <width>31</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/Assets/FlowerSymbolOFFAsset 3.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Home_button">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>360</y>
+     <width>91</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/Assets/HomearrowleftAsset 3.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QSlider" name="horizontalSlider_2">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>380</y>
+     <width>160</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QSlider" name="horizontalSlider">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>350</y>
+     <width>160</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Flower_small_2">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>50</y>
+     <width>31</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/Assets/FlowerSymbolOFFAsset 3.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Flower_small_3">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>90</y>
+     <width>31</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/Assets/FlowerSymbolOFFAsset 3.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Flower_small_4">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>130</y>
+     <width>31</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/Assets/FlowerSymbolOFFAsset 3.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Flower_small_5">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>170</y>
+     <width>31</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/Assets/FlowerSymbolOFFAsset 3.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Flower_small_6">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>210</y>
+     <width>31</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/Assets/FlowerSymbolOFFAsset 3.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Flower_small_7">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>250</y>
+     <width>31</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/Assets/FlowerSymbolOFFAsset 3.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Flower_small_8">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>290</y>
+     <width>31</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/Assets/FlowerSymbolOFFAsset 3.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Flower_small_9">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>330</y>
+     <width>31</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/Assets/FlowerSymbolOFFAsset 3.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Flower_small_10">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>370</y>
+     <width>31</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/Assets/FlowerSymbolOFFAsset 3.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Flower_outline">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>681</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/Assets/FlowerOutline.png</pixmap>
+   </property>
+  </widget>
+  <zorder>Flower_outline</zorder>
+  <zorder>Flower</zorder>
+  <zorder>Can</zorder>
+  <zorder>Flower_small_1</zorder>
+  <zorder>Home_button</zorder>
+  <zorder>horizontalSlider_2</zorder>
+  <zorder>horizontalSlider</zorder>
+  <zorder>Flower_small_2</zorder>
+  <zorder>Flower_small_3</zorder>
+  <zorder>Flower_small_4</zorder>
+  <zorder>Flower_small_5</zorder>
+  <zorder>Flower_small_6</zorder>
+  <zorder>Flower_small_7</zorder>
+  <zorder>Flower_small_8</zorder>
+  <zorder>Flower_small_9</zorder>
+  <zorder>Flower_small_10</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
