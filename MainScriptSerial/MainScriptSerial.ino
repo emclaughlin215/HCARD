@@ -1,16 +1,13 @@
+
 /*********************************************************************
 This sketch reads data from an MPU 6050 IMU, and sends it via 
-bluetooth to whatever device it is connected to. 
+serial to whatever device it is connected to. 
 
 This sketch includes code supplied by Adafruit and Jeff Rowberg
 
 The author of this sketch is David Jedeikin, and it has been developed
 as part of an HCARD postgraduate project at Imperial College London 
 *********************************************************************/
-
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< PreSetup >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< IMU Setup >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 // I2Cdev and MPU6050 must be installed as libraries, or else the .cpp/.h files
 // for both classes must be in the include path of your project
@@ -51,42 +48,12 @@ MPU6050 mpu;
  * ========================================================================= */
 
 
-
-// uncomment "OUTPUT_READABLE_QUATERNION" if you want to see the actual
-// quaternion components in a [w, x, y, z] format (not best for parsing
-// on a remote host such as Processing or something though)
-//#define OUTPUT_READABLE_QUATERNION
-
-// uncomment "OUTPUT_READABLE_EULER" if you want to see Euler angles
-// (in degrees) calculated from the quaternions coming from the FIFO.
-// Note that Euler angles suffer from gimbal lock (for more info, see
-// http://en.wikipedia.org/wiki/Gimbal_lock)
-//#define OUTPUT_READABLE_EULER
-
 // uncomment "OUTPUT_READABLE_YAWPITCHROLL" if you want to see the yaw/
 // pitch/roll angles (in degrees) calculated from the quaternions coming
 // from the FIFO. Note this also requires gravity vector calculations.
 // Also note that yaw/pitch/roll angles suffer from gimbal lock (for
 // more info, see: http://en.wikipedia.org/wiki/Gimbal_lock)
 #define OUTPUT_READABLE_YAWPITCHROLL
-
-// uncomment "OUTPUT_READABLE_REALACCEL" if you want to see acceleration
-// components with gravity removed. This acceleration reference frame is
-// not compensated for orientation, so +X is always +X according to the
-// sensor, just without the effects of gravity. If you want acceleration
-// compensated for orientation, us OUTPUT_READABLE_WORLDACCEL instead.
-//#define OUTPUT_READABLE_REALACCEL
-
-// uncomment "OUTPUT_READABLE_WORLDACCEL" if you want to see acceleration
-// components with gravity removed and adjusted for the world frame of
-// reference (yaw is relative to initial orientation, since no magnetometer
-// is present in this case). Could be quite handy in some cases.
-//#define OUTPUT_READABLE_WORLDACCEL
-
-// uncomment "OUTPUT_TEAPOT" if you want output that matches the
-// format used for the InvenSense teapot demo
-//#define OUTPUT_TEAPOT
-
 
 
 #define LED_PIN 13 // (Arduino is 13, Teensy is 11, Teensy++ is 6)
@@ -113,7 +80,6 @@ float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gra
 uint8_t teapotPacket[14] = { '$', 0x02, 0,0, 0,0, 0,0, 0,0, 0x00, 0x00, '\r', '\n' };
 
 
-
 // ================================================================
 // ===               INTERRUPT DETECTION ROUTINE                ===
 // ================================================================
@@ -123,6 +89,11 @@ void dmpDataReady() {
     mpuInterrupt = true;
 }
 
+String HapticCommand = "Nan"; 
+
+// ================================================================
+// ===                      INITIAL SETUP                       ===
+// ================================================================
 
 void setup() {
     // join I2C bus (I2Cdev library doesn't do this automatically)
@@ -134,16 +105,27 @@ void setup() {
     #endif
 
     // initialize serial communication
-    // (115200 chosen because it is required for Teapot Demo output, but it's
-    // really up to you depending on your project)
     Serial.begin(115200);
-    while (!Serial); // wait for Leonardo enumeration, others continue immediately
 
-    // NOTE: 8MHz or slower host processors, like the Teensy @ 3.3v or Ardunio
-    // Pro Mini running at 3.3v, cannot handle this baud rate reliably due to
-    // the baud timing being too misaligned with processor ticks. You must use
-    // 38400 or slower in these cases, or use some kind of external separate
-    // crystal solution for the UART timer.
+  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<< LED AND BUTTON SETUP >>>>>>>>>>>>>>>>>>>>>> 
+  pinMode(A3, OUTPUT);
+  pinMode(A2, INPUT);
+  digitalWrite(A3, HIGH);
+  Serial.println("Press Button to Begin");         
+  // MULTIPLE WHILE LOOPS ACTS AS A CRUDE DEBOUNCE 
+  while(digitalRead(A2) != 1){}           // Hang while button isnt pressed 
+  while(digitalRead(A2) != 1){}           // Hang while button isnt pressed 
+  while(digitalRead(A2) != 1){}           // Hang while button isnt pressed 
+  while(digitalRead(A2) != 1){}           // Hang while button isnt pressed 
+  Serial.println(F("Button Pressed"));         
+  int i; 
+  for (i = 1; i < 5; i = i+1) {
+    digitalWrite(A3, LOW);
+    delay(200); 
+    digitalWrite(A3, HIGH);
+    delay(200); 
+  }
+    digitalWrite(A3, LOW);
 
     // initialize device
     Serial.println(F("Initializing I2C devices..."));
@@ -200,13 +182,20 @@ void setup() {
 
     // configure LED for output
     pinMode(LED_PIN, OUTPUT);
-}  
-  
 
-double ANGLE;     // DEFINE THE ANGLE VARIABLE 
+  // Haptic SetUp 
+  pinMode(A0, OUTPUT);
+  pinMode(A1, OUTPUT);
+  Serial.println(F("Select front or back haptic motor"));
+}
+
+
+
+// ================================================================
+// ===                    MAIN PROGRAM LOOP                     ===
+// ================================================================
 
 void loop() {
-
     // if programming failed, don't try to do anything
     if (!dmpReady) return;
 
@@ -235,7 +224,8 @@ void loop() {
     if ((mpuIntStatus & 0x10) || fifoCount == 1024) {
         // reset so we can continue cleanly
         mpu.resetFIFO();
-        Serial.println(F("FIFO overflow!"));
+        // CURRENTLY CODE IS INEFFICIENT 
+        //Serial.println(F("FIFO overflow!"));
 
     // otherwise, check for DMP data ready interrupt (this should happen frequently)
     } else if (mpuIntStatus & 0x02) {
@@ -248,31 +238,6 @@ void loop() {
         // track FIFO count here in case there is > 1 packet available
         // (this lets us immediately read more without waiting for an interrupt)
         fifoCount -= packetSize;
-
-        #ifdef OUTPUT_READABLE_QUATERNION
-            // display quaternion values in easy matrix form: w x y z
-            mpu.dmpGetQuaternion(&q, fifoBuffer);
-            Serial.print("quat\t");
-            Serial.print(q.w);
-            Serial.print("\t");
-            Serial.print(q.x);
-            Serial.print("\t");
-            Serial.print(q.y);
-            Serial.print("\t");
-            Serial.println(q.z);
-        #endif
-
-        #ifdef OUTPUT_READABLE_EULER
-            // display Euler angles in degrees
-            mpu.dmpGetQuaternion(&q, fifoBuffer);
-            mpu.dmpGetEuler(euler, &q);
-            Serial.print("euler\t");
-            Serial.print(euler[0] * 180/M_PI);
-            Serial.print("\t");
-            Serial.print(euler[1] * 180/M_PI);
-            Serial.print("\t");
-            Serial.println(euler[2] * 180/M_PI);
-        #endif
 
         #ifdef OUTPUT_READABLE_YAWPITCHROLL
             // display Euler angles in degrees
@@ -287,58 +252,28 @@ void loop() {
             Serial.println(-ypr[2] * 180/M_PI);
         #endif
 
-        #ifdef OUTPUT_READABLE_REALACCEL
-            // display real acceleration, adjusted to remove gravity
-            mpu.dmpGetQuaternion(&q, fifoBuffer);
-            mpu.dmpGetAccel(&aa, fifoBuffer);
-            mpu.dmpGetGravity(&gravity, &q);
-            mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
-            Serial.print("areal\t");
-            Serial.print(aaReal.x);
-            Serial.print("\t");
-            Serial.print(aaReal.y);
-            Serial.print("\t");
-            Serial.println(aaReal.z);
-        #endif
-
-        #ifdef OUTPUT_READABLE_WORLDACCEL
-            // display initial world-frame acceleration, adjusted to remove gravity
-            // and rotated based on known orientation from quaternion
-            mpu.dmpGetQuaternion(&q, fifoBuffer);
-            mpu.dmpGetAccel(&aa, fifoBuffer);
-            mpu.dmpGetGravity(&gravity, &q);
-            mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
-            mpu.dmpGetLinearAccelInWorld(&aaWorld, &aaReal, &q);
-            Serial.print("aworld\t");
-            Serial.print(aaWorld.x);
-            Serial.print("\t");
-            Serial.print(aaWorld.y);
-            Serial.print("\t");
-            Serial.println(aaWorld.z);
-        #endif
-    
-        #ifdef OUTPUT_TEAPOT
-            // display quaternion values in InvenSense Teapot demo format:
-            teapotPacket[2] = fifoBuffer[0];
-            teapotPacket[3] = fifoBuffer[1];
-            teapotPacket[4] = fifoBuffer[4];
-            teapotPacket[5] = fifoBuffer[5];
-            teapotPacket[6] = fifoBuffer[8];
-            teapotPacket[7] = fifoBuffer[9];
-            teapotPacket[8] = fifoBuffer[12];
-            teapotPacket[9] = fifoBuffer[13];
-            Serial.write(teapotPacket, 14);
-            teapotPacket[11]++; // packetCount, loops at 0xFF on purpose
-        #endif
-
         // blink LED to indicate activity
         blinkState = !blinkState;
         digitalWrite(LED_PIN, blinkState);
     }
 
-  
-}
-
+  // Check for Haptic Feedback command 
+  if (Serial.available() > 0) {
+    HapticCommand = Serial.readString(); 
+    if (HapticCommand == "front") {
+      Serial.println("front Haptic");
+      digitalWrite(A0, HIGH);   
+      delay(500);                     
+      digitalWrite(A0, LOW);
+    }
+    else if (HapticCommand == "back") {
+      Serial.println("Back Haptic");
+      digitalWrite(A1, HIGH);   
+      delay(500);                     
+      digitalWrite(A1, LOW);
+    }  
+  }
+ }
 
 
 
