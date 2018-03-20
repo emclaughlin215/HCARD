@@ -15,10 +15,14 @@ def chat(connection, listen):
     connection.close() # Do not forget to clean up the connection or the port will be blocked until system restart
 
 print("Starting...")
-ROLE = "SEND" # LISTEN or SEND
+ROLE = "LISTEN" # LISTEN or SEND
 #ROLE = "LISTEN" # LISTEN or SEND
 
+<<<<<<< HEAD
+TCP_IP = '146.169.133.126'  # IP to connect to if we are the sender
+=======
 TCP_IP = '147.169.133.126'  # IP to connect to if we are the sender
+>>>>>>> d07d6679ece544d860f4ed679aa698fff96b153e
 TCP_IP_LISTEN = '0.0.0.0' # IP to listen on (0.0.0.0 will listen to any source IP)
 TCP_PORT = 631 # Port
 BUFFER_SIZE = 1024
