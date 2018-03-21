@@ -89,7 +89,15 @@ void dmpDataReady() {
     mpuInterrupt = true;
 }
 
+// HAPTIC PRE SETUP CODE 
+int TargetAngle; 
+int Angle; 
 String HapticCommand = "Nan"; 
+unsigned long PreviousMillis = 0; 
+const long Interval = 500;          // Change here to change the vibration motor period 
+const long largeInterval = 3000;          // Change here to change the vibration motor period 
+int ProgramStart = 0;               // Program Start variable 
+int Step = 1; 
 
 // ================================================================
 // ===                      INITIAL SETUP                       ===
@@ -107,16 +115,19 @@ void setup() {
     // initialize serial communication
     Serial.begin(115200);
 
+   // Wait for target angle
+    while (!Serial.available()){}; 
+    TargetAngle = Serial.parseInt();
+    Serial.println(F("The target angle is: "));
+    Serial.println(TargetAngle);
+
   // <<<<<<<<<<<<<<<<<<<<<<<<<<<<< LED AND BUTTON SETUP >>>>>>>>>>>>>>>>>>>>>> 
   pinMode(A3, OUTPUT);
-  pinMode(A2, INPUT);
+  pinMode(A2, INPUT_PULLUP);
   digitalWrite(A3, HIGH);
   Serial.println("Press Button to Begin");         
   // MULTIPLE WHILE LOOPS ACTS AS A CRUDE DEBOUNCE 
-  while(digitalRead(A2) != 1){}           // Hang while button isnt pressed 
-  while(digitalRead(A2) != 1){}           // Hang while button isnt pressed 
-  while(digitalRead(A2) != 1){}           // Hang while button isnt pressed 
-  while(digitalRead(A2) != 1){}           // Hang while button isnt pressed 
+  while(digitalRead(A2) != 0){}           // Hang while button isnt pressed 
   Serial.println(F("Button Pressed"));         
   int i; 
   for (i = 1; i < 5; i = i+1) {
@@ -195,85 +206,160 @@ void setup() {
 // ===                    MAIN PROGRAM LOOP                     ===
 // ================================================================
 
+
+
 void loop() {
-    // if programming failed, don't try to do anything
-    if (!dmpReady) return;
 
-    // wait for MPU interrupt or extra packet(s) available
-    while (!mpuInterrupt && fifoCount < packetSize) {
-        // other program behavior stuff here
-        // .
-        // .
-        // .
-        // if you are really paranoid you can frequently test in between other
-        // stuff to see if mpuInterrupt is true, and if so, "break;" from the
-        // while() loop to immediately process the MPU data
-        // .
-        // .
-        // .
-    }
+     // Press button to start process
+     if (ProgramStart == 0){
+        while(digitalRead(A2) != 0){}           // Hang while button isnt pressed 
+        ProgramStart = 1; 
+     }
 
-    // reset interrupt flag and get INT_STATUS byte
-    mpuInterrupt = false;
-    mpuIntStatus = mpu.getIntStatus();
-
-    // get current FIFO count
-    fifoCount = mpu.getFIFOCount();
-
-    // check for overflow (this should never happen unless our code is too inefficient)
-    if ((mpuIntStatus & 0x10) || fifoCount == 1024) {
-        // reset so we can continue cleanly
-        mpu.resetFIFO();
-        // CURRENTLY CODE IS INEFFICIENT 
-        //Serial.println(F("FIFO overflow!"));
-
-    // otherwise, check for DMP data ready interrupt (this should happen frequently)
-    } else if (mpuIntStatus & 0x02) {
-        // wait for correct available data length, should be a VERY short wait
-        while (fifoCount < packetSize) fifoCount = mpu.getFIFOCount();
-
-        // read a packet from FIFO
-        mpu.getFIFOBytes(fifoBuffer, packetSize);
+      int programCounter = 0;
+      int holdInPlace = 0;  
+      while (programCounter <= 10) {
+                
+            // *********************************************************
+            // IMU MAIN LOOP, DONT WORRY ABOUT THIS! 
+            if (!dmpReady) return;
         
-        // track FIFO count here in case there is > 1 packet available
-        // (this lets us immediately read more without waiting for an interrupt)
-        fifoCount -= packetSize;
+            // wait for MPU interrupt or extra packet(s) available
+            while (!mpuInterrupt && fifoCount < packetSize) {
+            }
+        
+            // reset interrupt flag and get INT_STATUS byte
+            mpuInterrupt = false;
+            mpuIntStatus = mpu.getIntStatus();
+        
+            // get current FIFO count
+            fifoCount = mpu.getFIFOCount();
+        
+            // check for overflow (this should never happen unless our code is too inefficient)
+            if ((mpuIntStatus & 0x10) || fifoCount == 1024) {
+                // reset so we can continue cleanly
+                mpu.resetFIFO();
+                // CURRENTLY CODE IS INEFFICIENT 
+                //Serial.println(F("FIFO overflow!"));
+        
+            // otherwise, check for DMP data ready interrupt (this should happen frequently)
+            } else if (mpuIntStatus & 0x02) {
+                // wait for correct available data length, should be a VERY short wait
+                while (fifoCount < packetSize) fifoCount = mpu.getFIFOCount();
+        
+                // read a packet from FIFO
+                mpu.getFIFOBytes(fifoBuffer, packetSize);
+                
+                // track FIFO count here in case there is > 1 packet available
+                // (this lets us immediately read more without waiting for an interrupt)
+                fifoCount -= packetSize;
+        
+                #ifdef OUTPUT_READABLE_YAWPITCHROLL
+                    // display Euler angles in degrees
+                    mpu.dmpGetQuaternion(&q, fifoBuffer);
+                    mpu.dmpGetGravity(&gravity, &q);
+                    mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
+                    //Serial.print("ypr\t");
+                    //Serial.print(ypr[0] * 180/M_PI);
+                    //Serial.print("\t");
+                    //Serial.print(ypr[1] * 180/M_PI);
+                    //Serial.print("\t");
+                    //0Serial.println(-ypr[2] * 180/M_PI);
+                    Angle = -ypr[2] * 180/M_PI;
+                    Angle = 90 - Angle;
+                    Serial.println(Angle);
+                   
+                     
+                #endif
+        
+                // blink LED to indicate activity
+                blinkState = !blinkState;
+                digitalWrite(LED_PIN, blinkState);
+            }
+            
+            // *********************************************************
+        
+        
+          //<<<<<<<<<<<<<<<<<<<< HAPTIC Control Commands >>>>>>>>>>>>>>>>>>>
 
-        #ifdef OUTPUT_READABLE_YAWPITCHROLL
-            // display Euler angles in degrees
-            mpu.dmpGetQuaternion(&q, fifoBuffer);
-            mpu.dmpGetGravity(&gravity, &q);
-            mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-            //Serial.print("ypr\t");
-            //Serial.print(ypr[0] * 180/M_PI);
-            //Serial.print("\t");
-            //Serial.print(ypr[1] * 180/M_PI);
-            //Serial.print("\t");
-            Serial.println(-ypr[2] * 180/M_PI);
-        #endif
+          // ********************************************************
+          //********************* TIMING CODE ***********************
+          unsigned long CurrentMillis = millis(); 
+          unsigned long CurrentInverval = CurrentMillis - PreviousMillis ;  
+          if (CurrentInverval >  Interval){                
+            digitalWrite(A0, LOW);
+          }
+          
+            if (CurrentInverval >  Interval){                
+            digitalWrite(A1, LOW);
+          }
+          // ********************************************************
 
-        // blink LED to indicate activity
-        blinkState = !blinkState;
-        digitalWrite(LED_PIN, blinkState);
-    }
+          int difference = Angle - TargetAngle;
+          int absDifference = abs(difference);  
 
-  // Check for Haptic Feedback command 
-  if (Serial.available() > 0) {
-    HapticCommand = Serial.readString(); 
-    if (HapticCommand == "front") {
-      Serial.println("front Haptic");
-      digitalWrite(A0, HIGH);   
-      delay(500);                     
-      digitalWrite(A0, LOW);
-    }
-    else if (HapticCommand == "back") {
-      Serial.println("Back Haptic");
-      digitalWrite(A1, HIGH);   
-      delay(500);                     
-      digitalWrite(A1, LOW);
-    }  
+          // Process flow switch case 
+          switch (Step) {
+            case 1:             // Set back haptic high to initiate rehab
+              holdInPlace = 0;      // Reset hold in place variable  
+              digitalWrite(A1, HIGH);   
+              PreviousMillis = CurrentMillis; 
+              Step = 2; 
+              break;
+            case 2:             // Set both haptics if target angle is reached
+              if (absDifference < 2) {
+                digitalWrite(A0, HIGH);  
+                digitalWrite(A1, HIGH);  
+                PreviousMillis = CurrentMillis;
+                Step = 3; 
+              }
+                
+              break;
+            case 3:             // Wait for interval to complete
+              if (holdInPlace <= 400 && absDifference < 2){   //Only increment if within the threshold
+                  holdInPlace++ ; 
+              }
+              if (holdInPlace > 400){
+                  Serial.println("Hold Complete");
+                  Step = 4; 
+              }
+              break;
+            case 4: 
+              holdInPlace = 0; 
+              digitalWrite(A0, HIGH);   
+              PreviousMillis = CurrentMillis; 
+              Step = 5; 
+              break;
+            case 5: 
+              if (Angle <= 8) {
+                digitalWrite(A0, HIGH);  
+                digitalWrite(A1, HIGH);  
+                PreviousMillis = CurrentMillis;
+                Step = 6; 
+            }  
+              break;
+            case 6:         // Wait for interval to complete
+              Serial.print("Hold in place Variable");
+              Serial.println(holdInPlace);
+              if (holdInPlace <= 400 && Angle < 8){
+                  holdInPlace++; 
+              }
+              if (holdInPlace > 400) {
+                Serial.println("Hold Complete");
+                programCounter++ ; 
+                Step = 1;
+               }
+              
+              break;
+            default:
+              // Nothing 
+              break;
+
+          }
+        
   }
- }
+  
+}
 
 
 
