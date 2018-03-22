@@ -6,7 +6,7 @@ import shutil
 import os
 
 class Exercises:
-    def __init__(self , Date= '' , Target_A = None , Duration_hold = None , Score = None , Comment = '' , Advice = ''):
+    def __init__(self , Date= '' , Target_A = '' , Duration_hold = '' , Score = '' , Comment = '' , Advice = ''):
         self.Date = Date
         self.Target_A = Target_A
         self.Duration_hold = Duration_hold

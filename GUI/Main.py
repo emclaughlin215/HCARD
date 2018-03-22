@@ -81,6 +81,7 @@ class MainWindow(QMainWindow):
         Post_ex_Widget = PostExerciseWidget(self)
         self.central_widget.addWidget(Post_ex_Widget)
         self.central_widget.setCurrentWidget(Post_ex_Widget)
+        Post_ex_Widget.pushButton.clicked.connect(self.Home)
         # Post_ex_Widget.saveButton.mousePressEvent = self.Home
 
 
@@ -125,6 +126,8 @@ class Exercise0Widget(QWidget, Exercise0.Ui_Form):
 
         global selected_ex_angle
         selected_ex_angle = self.exercise_angle
+        percentage = int(selected_ex_angle)*100/135
+        self.progressBar.setProperty("value", percentage)
         self.Ex_angle.setText(str(self.exercise_angle))
 
     def tab1(self,val):
@@ -371,13 +374,45 @@ class PostExerciseWidget(QWidget, Exercise3.Ui_Form):
     def __init__(self, parent=None):
         super(PostExerciseWidget, self).__init__(parent)
         self.setupUi(self)
+        self.saveButton.mousePressEvent = self.save
 
-        small_image_list = [self.Small_flower_1,self.Small_flower_2,self.Small_flower_3,self.Small_flower_4,self.Small_flower_5, self.Small_flower_6, self.Small_flower_7, self.Small_flower_8, self.Small_flower_9, self.Small_flower_10]
+        small_image_list = [self.Small_image_1,self.Small_image_2,self.Small_image_3,self.Small_image_4,self.Small_image_5, self.Small_image_6, self.Small_image_7, self.Small_image_8, self.Small_image_9, self.Small_image_10]
         global Selected_ex
         global Last_exercise_list
-        print Selected_ex, Last_exercise_list
+        global selected_ex_angle
 
+        print 'Selected_ex_angle', selected_ex_angle
 
+        ## define score, angle and Advice
+        self.targetAngle = str(selected_ex_angle)
+        self.holdDuration = np.average(Last_exercise_list)
+        if self.holdDuration < 120:
+            self.Score = 1
+        elif self.holdDuration < 240:
+            self.Score = 2
+        elif self.holdDuration < 400:
+            self.Score = 3
+        if self.Score == 1:
+            self.Advice = 'Try holding for a bit longer'
+        elif self.Score == 2:
+            self.Advice = 'Nearly there! Try holding the position just a little longer!'
+        elif self.Score == 3:
+            self.Advice = 'Keep it up!'
+
+        ## initialise graphics on page
+        starlist = [self.Star_1, self.Star_2, self.Star_3]
+        for i in range(0,self.Score):
+            print i
+            starlist[i].setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/Star_largeAsset 1.png"))
+
+        last_angle_string = "%s degrees" %(self.targetAngle)
+        print last_angle_string
+        self.Last_angle.setText(last_angle_string)
+        percentage = int(selected_ex_angle) * 100 / 135
+        self.progressBar.setProperty("value", percentage)
+        self.advice_label.setText(self.Advice)
+
+        # retranslate small icons
         if Selected_ex == 1:
             for i in range(0,9):
                 print Last_exercise_list[i]
@@ -389,6 +424,39 @@ class PostExerciseWidget(QWidget, Exercise3.Ui_Form):
                 print Last_exercise_list[i]
                 TargetPath = "../../../../Work/HCARD/Images/Assets/Target%04d.png" % (Last_exercise_list[i])
                 small_image_list[i].setPixmap(QPixmap(TargetPath))
+
+    def save(self,val):
+        print 'saving'
+        print self.comment.text()
+        if self.comment.text() != "Type your comment here..." and self.comment.text() != '':
+            currentDate = str(time.strftime("%Y%m%d"))
+            # global Selected_ex_angle
+            global Last_exercise_list
+            # targetAngle = str(Selected_ex_angle)
+            # holdDuration = str(np.average(Last_exercise_list))
+            # print holdDuration
+            # Score = 1
+            # if holdDuration< 120:
+            #     Score = 1
+            # elif holdDuration <240:
+            #     Score =2
+            # elif holdDuration <400:
+            #     Score = 3
+            Comment = str(self.comment.text())
+            # if Score == 1:
+            #     Advice = 'Try holding for a bit longer'
+            # elif Score == 2:
+            #     Advice = 'Nearly there! Try holding the position just a little longer!'
+            # elif Score == 3:
+            #     Advice = 'Keep it up!'
+            self.Score = str(self.Score)
+            self.holdDuration = str(self.holdDuration)
+            # print currentDate, type(currentDate), self.targetAngle, type(targetAngle), holdDuration, type(holdDuration),Score, type(Score), Comment, type(Comment),Advice, type(Advice)
+            new_object = Data.Exercises(currentDate,self.targetAngle,self.holdDuration,self.Score,Comment,self.Advice)
+            Data.saveObject('Data_backend.txt',new_object)
+            self.pushButton.click()
+        else:
+            QMessageBox.about(self, "ERROR", "Please leave a comment")
 
 
 class ResultsWidget(QWidget , Results1.Ui_Form):
