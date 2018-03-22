@@ -48,6 +48,22 @@
     <pixmap>../../../../Work/HCARD/Images/Assets/HomearrowleftAsset 3.png</pixmap>
    </property>
   </widget>
+  <widget class="QLabel" name="Target">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>230</y>
+     <width>100</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../../../../Work/HCARD/Images/Target/Target0001.png</pixmap>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
