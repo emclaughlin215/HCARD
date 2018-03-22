@@ -212,7 +212,7 @@ class Exercise1Widget(QWidget, Exercise1.Ui_Form):
             else:
                 print(self.angle, "not int")
             self.Current_angle.setText(str(self.angle))
-            if (self.targetAngle+2>self.angle>self.targetAngle-2) and self.flowerval <100:
+            if (self.targetAngle+2>self.angle>self.targetAngle-2) and self.flowerval <400:
                 self.flowerval +=1
                 self.retranslateFlower(self.flowerval)
         except:
@@ -222,7 +222,7 @@ class Exercise1Widget(QWidget, Exercise1.Ui_Form):
         # print (value)
         self.retranslatePot(value)
         ### if watering can angle at target, adds to the flower size (flowerval)
-        if (value > self.targetAngle-5) and (value< self.targetAngle+5) and self.flowerval <100 and self.movecount <10:
+        if (value > self.targetAngle-5) and (value< self.targetAngle+5) and self.flowerval <400 and self.movecount <10:
             self.flowerval +=1
             self.retranslateFlower(self.flowerval)
 
@@ -314,8 +314,8 @@ class Exercise2Widget(QWidget, Exercise2.Ui_Form):  ## still need to count movem
 
     def growTargetImage(self):
         self.countval += 1
-        if self.countval >101:
-            self.countval = 101
+        if self.countval >400:
+            self.countval = 400
         self.retranslateTarget(self.countval)
 
     def retranslateTarget(self, val):
