@@ -197,7 +197,7 @@ void setup() {
   // Haptic SetUp 
   pinMode(A0, OUTPUT);
   pinMode(A1, OUTPUT);
-  Serial.println(F("Select front or back haptic motor"));
+  Serial.println(F("Press Button to Begin"));
 }
 
 
@@ -216,9 +216,20 @@ void loop() {
         ProgramStart = 1; 
      }
 
+      // Main Program flow variables 
       int programCounter = 0;
       int holdInPlace = 0;  
+      int waitTime = 400; 
+      int zeroThreshold = 8; 
+      int angleThreshold = 2; 
       while (programCounter <= 10) {
+
+        //Debugging: 
+        Serial.print("Current Step: "); 
+        Serial.println(Step); 
+        Serial.print("Target Angle: "); 
+        Serial.println(TargetAngle); 
+        
                 
             // *********************************************************
             // IMU MAIN LOOP, DONT WORRY ABOUT THIS! 
@@ -316,11 +327,10 @@ void loop() {
                 
               break;
             case 3:             // Wait for interval to complete
-              if (holdInPlace <= 400 && absDifference < 2){   //Only increment if within the threshold
+              if (holdInPlace <= waitTime && absDifference < angleThreshold){   //Only increment if within the threshold
                   holdInPlace++ ; 
               }
-              if (holdInPlace > 400){
-                  Serial.println("Hold Complete");
+              if (holdInPlace > waitTime){
                   Step = 4; 
               }
               break;
@@ -331,7 +341,7 @@ void loop() {
               Step = 5; 
               break;
             case 5: 
-              if (Angle <= 8) {
+              if (Angle <= zeroThreshold) {
                 digitalWrite(A0, HIGH);  
                 digitalWrite(A1, HIGH);  
                 PreviousMillis = CurrentMillis;
@@ -339,13 +349,10 @@ void loop() {
             }  
               break;
             case 6:         // Wait for interval to complete
-              Serial.print("Hold in place Variable");
-              Serial.println(holdInPlace);
-              if (holdInPlace <= 400 && Angle < 8){
+              if (holdInPlace <= waitTime && Angle < zeroThreshold){
                   holdInPlace++; 
               }
-              if (holdInPlace > 400) {
-                Serial.println("Hold Complete");
+              if (holdInPlace > waitTime) {
                 programCounter++ ; 
                 Step = 1;
                }
