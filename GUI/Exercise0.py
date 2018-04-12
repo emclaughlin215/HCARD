@@ -8,7 +8,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -23,8 +22,6 @@ class Ui_Form(object):
         self.Exercise_box.setGeometry(QtCore.QRect(360, 110, 261, 261))
         self.Exercise_box.setMouseTracking(True)
         self.Exercise_box.setText("")
-
-
         self.Exercise_box.setPixmap(QtGui.QPixmap("../../../../Work/HCARD/Images/Assets/SelectedExerciseBox 1.png"))
         self.Exercise_box.setObjectName("Exercise_box")
         self.Go_button = QtWidgets.QLabel(Form)
@@ -108,7 +105,7 @@ class Ui_Form(object):
         self.Last_angle.setFont(font)
         self.Last_angle.setObjectName("Last_angle")
         self.Last_advice = QtWidgets.QLabel(Form)
-        self.Last_advice.setGeometry(QtCore.QRect(10, 240, 131, 21))
+        self.Last_advice.setGeometry(QtCore.QRect(10, 240, 291, 21))
         font = QtGui.QFont()
         font.setFamily("Myriad CAD")
         font.setPointSize(12)
@@ -177,3 +174,4 @@ class Ui_Form(object):
         self.Last_angle.setText(_translate("Form", "0 degrees"))
         self.Last_advice.setText(_translate("Form", "Some Text"))
         self.Ex_angle.setText(_translate("Form", "135°"))
+

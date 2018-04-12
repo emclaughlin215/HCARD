@@ -11,7 +11,7 @@ import datetime
 import math
 import serial
 
-import Exercise0, Exercise1, Exercise2, Exercise3 ,Home, Results1, Data_target, Data
+import Exercise0, Exercise1, Exercise2, Exercise3 ,Home, Results1, Data_target, Data, Email
 import sys
 import serial
 import testblank
@@ -20,7 +20,7 @@ Selected_ex = 1
 Selected_ex_angle = 0
 Last_exercise_list =[0,0,0,0,0,0,0,0,0,0]
 
-port = 'COM12'
+port = 'COM13'
 try:
     ser = serial.Serial(port, 115200)
     print 'board connected'
@@ -59,9 +59,7 @@ class MainWindow(QMainWindow):
 
 
     def Exercise1(self,val):
-
         global Selected_ex
-
         if Selected_ex == 1:
             print 'ex1'
             Exercise_Widget = Exercise1Widget(self)
@@ -174,7 +172,6 @@ class Exercise1Widget(QWidget, Exercise1.Ui_Form):
         global selected_ex_angle
         self.targetAngle = selected_ex_angle
         self.Target_angle.setText(str(self.targetAngle))
-
         ## serial connect check
         global ser
         try:
@@ -238,9 +235,10 @@ class Exercise1Widget(QWidget, Exercise1.Ui_Form):
         # print self.movecount
         # print self.midmove
         # print value
-        if value > 8:
+        self.Current_angle.setText(str(value))
+        if value > 10:
             self.midmove = True
-        if value < 8 and  self.midmove == True and self.movecount<10:
+        if value < 10 and  self.midmove == True and self.movecount<10:
             global Last_exercise_list
             Last_exercise_list[self.movecount] = self.flowerval
             self.movecount += 1
@@ -253,6 +251,7 @@ class Exercise1Widget(QWidget, Exercise1.Ui_Form):
         self.Can.setPixmap(QPixmap(canpath))
         if self.movecount == 10:
             self.Ex_complete.setGeometry(QRect(180, 100, 331, 201))
+            self.timer.stop()
 
 
     def retranslatesmallflowers(self):
@@ -271,7 +270,7 @@ class Exercise2Widget(QWidget, Exercise2.Ui_Form):  ## still need to count movem
         self.targetAngle = selected_ex_angle
         self.Target_angle.setText(str(self.targetAngle))
         self.angle = 0
-
+        print self.targetAngle
         ## serial connect check
         global ser
         try:
@@ -281,7 +280,7 @@ class Exercise2Widget(QWidget, Exercise2.Ui_Form):  ## still need to count movem
 
             ## send target angle to initialise
             # if ser.readline()== None:
-            # ser.write(int(self.targetAngle))
+            ser.write(str(self.targetAngle))
             print 'sent angle'
         except:
             print 'no board'
@@ -326,19 +325,33 @@ class Exercise2Widget(QWidget, Exercise2.Ui_Form):  ## still need to count movem
         self.Target.setPixmap(QPixmap(TargetPath))
 
     def serial_control(self):
+
         try:
             self.angle = ser.readline()
+            print self.angle
             try:
                 self.angle = float(self.angle)
                 self.angle = int(self.angle)
             except(ValueError):
                 return (self.angle)
             if type(self.angle) == int:
-                self.retranslateLeg(self.angle)  # replace with self.pot(self.angle)
+                if self.angle == 999:
+                    print 'HIPFAIL'
+                    self.showhipfail()
+                    print self.angle
+                else:
+                    self.retranslateLeg(self.angle)  # replace with self.pot(self.angle)
+                    # self.Leg_warning.setGeometry(QRect(1000, 1000, 221, 41))
             else:
                 print(self.angle, "not int")
         except:
             a = 'no board'
+    def showhipfail(self):
+        self.Leg_warning.setGeometry(QRect(120, 100, 221, 41))
+        hiptime = QTimer()
+        hiptime.singleShot(500, self.hidehipfail)
+    def hidehipfail(self):
+        self.Leg_warning.setGeometry(QRect(1000, 1000, 221, 41))
 
     def leg(self,val):
         self.angle = self.horizontalSlider.value()
@@ -355,13 +368,13 @@ class Exercise2Widget(QWidget, Exercise2.Ui_Form):  ## still need to count movem
         legpath = "../../../../Work/HCARD/Images/LegMovement/LegMove%04d.png" % (135-value)
         # print legpath
         self.Leg.setPixmap(QPixmap(legpath))
-        print value, self.targetAngle
+        # print value, self.targetAngle
         self.Current_angle.setText(str(value))
         if self.angle > self.targetAngle-2 and self.angle < self.targetAngle+2 :
             self.growTargetImage()
-        if value > 8:
+        if value > 10:
             self.midmove = True
-        if value < 8 and self.midmove == True and self.movecount<10:
+        if value < 10 and self.midmove == True and self.movecount<10:
             global Last_exercise_list
             Last_exercise_list[self.movecount] = self.countval
             self.movecount += 1
@@ -369,6 +382,7 @@ class Exercise2Widget(QWidget, Exercise2.Ui_Form):  ## still need to count movem
             self.retranslatesmalltarget()
         if self.movecount == 10:
             self.Ex_complete.setGeometry(QRect(180, 100, 331, 201))
+            self.timer.stop()
 
 class PostExerciseWidget(QWidget, Exercise3.Ui_Form):
     def __init__(self, parent=None):
@@ -414,15 +428,15 @@ class PostExerciseWidget(QWidget, Exercise3.Ui_Form):
 
         # retranslate small icons
         if Selected_ex == 1:
-            for i in range(0,9):
-                print Last_exercise_list[i]
-                TargetPath = "../../../../Work/HCARD/Images/FlowerGrowingSmall/AnimationFlowersSmall%04d.png" % (Last_exercise_list[i])
+            for i in range(0,10):
+                print i,Last_exercise_list[i]
+                TargetPath = "../../../../Work/HCARD/Images/FlowerGrowingSmall/AnimationFlowers%04d.png" % (Last_exercise_list[i])
                 print TargetPath
                 small_image_list[i].setPixmap(QPixmap(TargetPath))
         if Selected_ex == 2:
-            for i in range(0,9):
+            for i in range(0,10):
                 print Last_exercise_list[i]
-                TargetPath = "../../../../Work/HCARD/Images/Assets/Target%04d.png" % (Last_exercise_list[i])
+                TargetPath = "C:\Users\Jacob\Work\HCARD\Images\Targetsmall\Targetsmall%04d.png" % (Last_exercise_list[i])
                 small_image_list[i].setPixmap(QPixmap(TargetPath))
 
     def save(self,val):
@@ -455,9 +469,9 @@ class PostExerciseWidget(QWidget, Exercise3.Ui_Form):
             new_object = Data.Exercises(currentDate,self.targetAngle,self.holdDuration,self.Score,Comment,self.Advice)
             Data.saveObject('Data_backend.txt',new_object)
             self.pushButton.click()
+            Email.send_email()
         else:
             QMessageBox.about(self, "ERROR", "Please leave a comment")
-
 
 class ResultsWidget(QWidget , Results1.Ui_Form):
     def __init__(self, parent=None):
@@ -465,14 +479,17 @@ class ResultsWidget(QWidget , Results1.Ui_Form):
         super(ResultsWidget, self).__init__(parent)
         self.setupUi(self)
         self.exercise_list = Data.loadObjects('Data_backend.txt')
+        self.most_recent_angle = self.exercise_list[-1].Target_A
+        self.Current_angle.setText(str(self.most_recent_angle))
+        self.proggression_percent = str(int(self.most_recent_angle)*100/135)
+        self.Current_progression.setText(self.proggression_percent)
+
         datelist = []
         anglelist = []
 
         for i in self.exercise_list:
             datelist.append(str(i.Date))
             anglelist.append(int(i.Target_A))
-
-
 
         weeks = Data_target.week_list
         Tangles = Data_target.angle_list
@@ -490,8 +507,8 @@ class ResultsWidget(QWidget , Results1.Ui_Form):
         # X = range(0,points)
         # Y = np.exp2(X)
         #
-        self.Plot.plot(weeks,Tangles, pen=(10), symbolBrush=(237, 177, 32), symbolPen='w', symbol='o',symbolSize=5, name="symbol='star'")
-        self.Plot.plot(datelist, anglelist, pen=(237, 177, 32), symbolBrush=(237, 177, 32), symbolPen='w', symbol='star', symbolSize=20, name="symbol='star'")
+        self.Plot.plot(weeks,Tangles, pen=(53, 168, 224), symbolBrush=(53, 168, 224), symbolPen='w', symbol='o',symbolSize=5, name="symbol='star'")
+        self.Plot.plot(datelist, anglelist, pen=(248, 177, 51), symbolBrush=(248, 177, 51), symbolPen='w', symbol='star', symbolSize=20, name="symbol='star'")
 
 
         # self.Plot.plot(X2, Y2, pen=(255, 255, 255), symbolBrush=(237, 177, 32), symbolPen='w', symbol='star', symbolSize=20,

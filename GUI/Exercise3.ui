@@ -352,7 +352,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>../../../../Work/HCARD/Images/Targetsmall/Targetsmall0001.png</pixmap>
+    <pixmap>../../../../Work/HCARD/Images/FlowerGrowingSmall/AnimationFlowers0001.png</pixmap>
    </property>
    <property name="openExternalLinks">
     <bool>false</bool>
@@ -402,7 +402,7 @@
    <property name="font">
     <font>
      <family>MS Office Symbol Semilight</family>
-     <pointsize>16</pointsize>
+     <pointsize>20</pointsize>
     </font>
    </property>
    <property name="text">
