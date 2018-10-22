@@ -147,21 +147,21 @@ class Exercise0Widget(QWidget, Exercise0.Ui_Form):
 
     def retranslateTAB(self, tab_clicked):
         if tab_clicked == 1:
-            self.Tab_1.setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/ResultsLogoAsset 9.png"))
-            self.Tab_2.setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/ResultsLogoAsset 10.png"))
-            self.Tab_3.setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/ResultsLogoAsset 10.png"))
-            self.Exercise_box.setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/SelectedExerciseBox 1.png"))
+            self.Tab_1.setPixmap(QPixmap("Graphics/Assets/ResultsLogoAsset 9.png"))
+            self.Tab_2.setPixmap(QPixmap("Graphics/Assets/ResultsLogoAsset 10.png"))
+            self.Tab_3.setPixmap(QPixmap("Graphics/Assets/ResultsLogoAsset 10.png"))
+            self.Exercise_box.setPixmap(QPixmap("Graphics/Assets/SelectedExerciseBox 1.png"))
         elif tab_clicked == 2:
-            self.Tab_2.setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/ResultsLogoAsset 9.png"))
-            self.Tab_1.setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/ResultsLogoAsset 10.png"))
-            self.Tab_3.setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/ResultsLogoAsset 10.png"))
-            self.Exercise_box.setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/SelectedExerciseBox 2.png"))
+            self.Tab_2.setPixmap(QPixmap("Graphics/Assets/ResultsLogoAsset 9.png"))
+            self.Tab_1.setPixmap(QPixmap("Graphics/Assets/ResultsLogoAsset 10.png"))
+            self.Tab_3.setPixmap(QPixmap("Graphics/Assets/ResultsLogoAsset 10.png"))
+            self.Exercise_box.setPixmap(QPixmap("Graphics/Assets/SelectedExerciseBox 2.png"))
 
         elif tab_clicked == 3:
-            self.Tab_3.setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/ResultsLogoAsset 9.png"))
-            self.Tab_2.setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/ResultsLogoAsset 10.png"))
-            self.Tab_1.setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/ResultsLogoAsset 10.png"))
-            self.Exercise_box.setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/SelectedExerciseBox.png"))
+            self.Tab_3.setPixmap(QPixmap("Graphics/Assets/ResultsLogoAsset 9.png"))
+            self.Tab_2.setPixmap(QPixmap("Graphics/Assets/ResultsLogoAsset 10.png"))
+            self.Tab_1.setPixmap(QPixmap("Graphics/Assets/ResultsLogoAsset 10.png"))
+            self.Exercise_box.setPixmap(QPixmap("Graphics/Assets/SelectedExerciseBox.png"))
 
 class Exercise1Widget(QWidget, Exercise1.Ui_Form):
     def __init__(self, parent=None):
@@ -227,8 +227,8 @@ class Exercise1Widget(QWidget, Exercise1.Ui_Form):
             self.retranslateFlower(self.flowerval)
 
     def retranslateFlower(self, value):
-        flowerpath = "../../../../Work/HCARD/Images/FlowerGrowing/AnimationFlowers%04d.png" % (value)
-        # print flowerpath
+        flowerpath = "Graphics/FlowerGrowing/AnimationFlowers%04d.png" % (value)
+        print flowerpath
         self.Flower.setPixmap(QPixmap(flowerpath))
 
     def retranslatePot(self, value):
@@ -246,7 +246,7 @@ class Exercise1Widget(QWidget, Exercise1.Ui_Form):
             self.retranslatesmallflowers()
         if value > 90:
             value = 90
-        canpath = "../../../../Work/HCARD/Images/WateringCan/Can%04d.png" % (value)
+        canpath = "Graphics/WateringCan/Can%04d.png" % (value)
         # print canpath
         self.Can.setPixmap(QPixmap(canpath))
         if self.movecount == 10:
@@ -256,7 +256,7 @@ class Exercise1Widget(QWidget, Exercise1.Ui_Form):
 
     def retranslatesmallflowers(self):
         for i in range(0,self.movecount):
-            self.smallflowerlist[i].setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/FlowerSymbolONAsset 2.png"))
+            self.smallflowerlist[i].setPixmap(QPixmap("Graphics/Assets/FlowerSymbolONAsset 2.png"))
         self.flowerval = 0
         self.retranslateFlower(1)
 
@@ -321,7 +321,7 @@ class Exercise2Widget(QWidget, Exercise2.Ui_Form):  ## still need to count movem
         self.retranslateTarget(self.countval)
 
     def retranslateTarget(self, val):
-        TargetPath = "../../../../Work/HCARD/Images/Target/Target%04d.png" % (val)
+        TargetPath = "Graphics/Target/Target%04d.png" % (val)
         self.Target.setPixmap(QPixmap(TargetPath))
 
     def serial_control(self):
@@ -360,12 +360,12 @@ class Exercise2Widget(QWidget, Exercise2.Ui_Form):  ## still need to count movem
 
     def retranslatesmalltarget(self):
         for i in range(0,self.movecount):
-            self.smalltargetlist[i].setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/Targetlogo.png"))
+            self.smalltargetlist[i].setPixmap(QPixmap("Graphics/Assets/Targetlogo.png"))
         self.countval = 0
         self.retranslateTarget(1)
 
     def retranslateLeg(self, value):
-        legpath = "../../../../Work/HCARD/Images/LegMovement/LegMove%04d.png" % (135-value)
+        legpath = "Graphics/LegMovement/LegMove%04d.png" % (135-value)
         # print legpath
         self.Leg.setPixmap(QPixmap(legpath))
         # print value, self.targetAngle
@@ -417,7 +417,7 @@ class PostExerciseWidget(QWidget, Exercise3.Ui_Form):
         starlist = [self.Star_1, self.Star_2, self.Star_3]
         for i in range(0,self.Score):
             print i
-            starlist[i].setPixmap(QPixmap("../../../../Work/HCARD/Images/Assets/Star_largeAsset 1.png"))
+            starlist[i].setPixmap(QPixmap("Graphics/Assets/Star_largeAsset 1.png"))
 
         last_angle_string = "%s degrees" %(self.targetAngle)
         print last_angle_string
@@ -430,13 +430,13 @@ class PostExerciseWidget(QWidget, Exercise3.Ui_Form):
         if Selected_ex == 1:
             for i in range(0,10):
                 print i,Last_exercise_list[i]
-                TargetPath = "../../../../Work/HCARD/Images/FlowerGrowingSmall/AnimationFlowers%04d.png" % (Last_exercise_list[i])
+                TargetPath = "Graphics/FlowerGrowingSmall/AnimationFlowers%04d.png" % (Last_exercise_list[i])
                 print TargetPath
                 small_image_list[i].setPixmap(QPixmap(TargetPath))
         if Selected_ex == 2:
             for i in range(0,10):
                 print Last_exercise_list[i]
-                TargetPath = "C:\Users\Jacob\Work\HCARD\Images\Targetsmall\Targetsmall%04d.png" % (Last_exercise_list[i])
+                TargetPath = "Graphics\Targetsmall\Targetsmall%04d.png" % (Last_exercise_list[i])
                 small_image_list[i].setPixmap(QPixmap(TargetPath))
 
     def save(self,val):
